@@ -1,0 +1,20 @@
+.Main-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.Main {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.selection-display {
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+
+.form-control {
+    width: 200px;
+}
