@@ -1,5 +1,3 @@
-import React from 'react';
-
 const locations = [
     { name: '서울', id: 1835848 },
     { name: '부산', id: 1838524 },
