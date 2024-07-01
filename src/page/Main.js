@@ -20,16 +20,17 @@ function Main() {
 
     const handleCheck = async () => {
         try {
-            console.log(email);
             const response = await axios.get(`http://localhost:8080/v1/weather-mappings/key`, {
-                params: { email: email }
+                params: { email }
             });
 
             // 이메일로 조회되는 키값이 있으면 업데이트, 없으면 등록 여부 확인 모달
-            response.data
-                ? navigate('/update')
-                : setIsModalOpen(true)
-
+            if (response.data) {
+                navigate('/update');
+                setKey(response.data);
+            } else {
+                setIsModalOpen(true);
+            }
         } catch (error) {
             setIsModalOpen(true)
         }
