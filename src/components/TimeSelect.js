@@ -1,7 +1,7 @@
 const generateHours = () => {
     const hours = [];
     for (let i = 0; i < 24; i++) {
-        hours.push(i);
+        hours.push(i.toString().padStart(2, '0'));
     }
     return hours;
 };
