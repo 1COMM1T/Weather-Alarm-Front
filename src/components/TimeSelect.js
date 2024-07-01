@@ -1,7 +1,7 @@
 const generateHours = () => {
     const hours = [];
     for (let i = 0; i < 24; i++) {
-        hours.push(i.toString().padStart(2, '0'));
+        hours.push(`${i.toString().padStart(2, '0')}:00`);
     }
     return hours;
 };
@@ -16,7 +16,7 @@ const TimeSelect = ({ onSelect }) => {
                 <option value="">시간을 선택해주세요</option>
                 {hours.map((hour) => (
                     <option key={hour} value={hour}>
-                        {hour}:00
+                        {hour}
                     </option>
                 ))}
             </select>
