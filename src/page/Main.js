@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setKey, setEmail } from "../Store";
+import { useNavigate } from "react-router";
 import EmailInput from "../components/EmailInput";
 import Button from "../components/Button";
+import axios from 'axios';
 import CheckModal from "../components/CheckModal";
 import '../css/Main.css';
-import { useNavigate } from "react-router";
 
 function Main() {
     const email = useSelector(state => state.main.email);
@@ -18,7 +19,20 @@ function Main() {
     };
 
     const handleCheck = async () => {
-        setIsModalOpen(true);
+        try {
+            console.log(email);
+            const response = await axios.get(`http://localhost:8080/v1/weather-mappings/key`, {
+                params: { email: email }
+            });
+
+            // 이메일로 조회되는 키값이 있으면 업데이트, 없으면 등록 여부 확인 모달
+            response.data
+                ? navigate('/update')
+                : setIsModalOpen(true)
+
+        } catch (error) {
+            setIsModalOpen(true)
+        }
     };
 
     const closeModal = () => {
@@ -26,7 +40,7 @@ function Main() {
     };
 
     const onConfirm = () => {
-        navigate('/save')
+        navigate('/save');
     }
 
     const mainStyle = {
@@ -53,7 +67,7 @@ function Main() {
                     </div>
                 </div>
             </div>
-            <CheckModal  isOpen={isModalOpen} onClose={closeModal} onConfirm={onConfirm} />
+            <CheckModal isOpen={isModalOpen} onClose={closeModal} onConfirm={onConfirm} />
         </div>
     );
 }
