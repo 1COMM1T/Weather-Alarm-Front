@@ -33,9 +33,8 @@ function Save() {
                 time: selectedTime
             }
 
-            const response = await axios.post('/v1/weather-mappings', jsonData);
+            const response = await axios.post('http://localhost:8080/v1/weather-mappings', jsonData);
 
-            console.log(response.data)
         } catch (error) {
             console.log('저장 실패', error)
         }
