@@ -2,6 +2,7 @@ import { useState } from "react";
 import LocationSelect from "../components/LocationSelect";
 import TimeSelect from "../components/TimeSelect";
 import EmailInput from "../components/EmailInput";
+import axios from 'axios';
 import '../css/Main.css';
 
 function Main() {
@@ -21,8 +22,8 @@ function Main() {
         setSelectedTime(hour);
     };
 
-    const handleSave = () => {
-        // TODO: 선택된 내용 처리 메소드 작성 
+    const handleSave = async () => {
+        // TODO: 저장 버튼 클릭 시 동작
     };
 
     const handleUpdate = () => {
@@ -36,7 +37,7 @@ function Main() {
     const mainStyle = {
         height: '100vh',
         width: '100vw',
-        backgroundImage: 'url(/images/blue.jpg)', // 배경 이미지 경로 설정
+        backgroundImage: 'url(/images/blue.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         display: 'flex',
@@ -44,36 +45,27 @@ function Main() {
         alignItems: 'center'
     };
 
-    const contentStyle = {
-        backgroundColor: 'white',
-        padding: '20px',
-        borderRadius: '10px',
-        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        textAlign: 'center',
-        maxWidth: '400px',
-        width: '100%'
-    };
 
     return (
-        <div className="Main" style={mainStyle}>
-            <div className="Content" style={contentStyle}>
+        <div className="main" style={mainStyle}>
+            <div className="content">
                 <h1 className="mt-4 mb-4">Weather-Alarm</h1>
                 <div className="d-flex flex-column justify-content-center align-items-center">
                     <EmailInput email={email} onChange={handleEmailChange} />
                     <LocationSelect onSelect={handleLocationSelect} />
                     <TimeSelect onSelect={handleTimeSelect} />
                     <div className="form-group" style={{ width: 300 }}>
-                    <div className="d-flex justify-content-between mt-4">
-                        <button className="btn btn-primary mx-2" onClick={handleSave}>
-                            저장
-                        </button>
-                        <button className="btn btn-secondary mx-2" onClick={handleUpdate}>
-                            수정
-                        </button>
-                        <button className="btn btn-danger mx-2" onClick={handleDelete}>
-                            삭제
-                        </button>
-                    </div>
+                        <div className="d-flex justify-content-between mt-4">
+                            <button className="btn btn-primary mx-2" onClick={handleSave}>
+                                저장
+                            </button>
+                            <button className="btn btn-secondary mx-2" onClick={handleUpdate}>
+                                수정
+                            </button>
+                            <button className="btn btn-danger mx-2" onClick={handleDelete}>
+                                삭제
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
