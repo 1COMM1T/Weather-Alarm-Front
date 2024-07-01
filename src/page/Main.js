@@ -1,12 +1,15 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setKey, setEmail } from "../Store";
 import EmailInput from "../components/EmailInput";
-import '../css/Main.css';
 import Button from "../components/Button";
+import CheckModal from "../components/CheckModal";
+import '../css/Main.css';
 import { useNavigate } from "react-router";
 
 function Main() {
     const email = useSelector(state => state.main.email);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -15,9 +18,16 @@ function Main() {
     };
 
     const handleCheck = async () => {
-        // TODO: 임시, 확인 모달 작성해야함
-        navigate('/update')
+        setIsModalOpen(true);
     };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const onConfirm = () => {
+        navigate('/save')
+    }
 
     const mainStyle = {
         height: '100vh',
@@ -29,8 +39,6 @@ function Main() {
         justifyContent: 'center',
         alignItems: 'center'
     };
-    
-    console.log('email',email);
 
     return (
         <div className="main" style={mainStyle}>
@@ -45,6 +53,7 @@ function Main() {
                     </div>
                 </div>
             </div>
+            <CheckModal  isOpen={isModalOpen} onClose={closeModal} onConfirm={onConfirm} />
         </div>
     );
 }
