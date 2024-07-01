@@ -24,7 +24,19 @@ function Main() {
     };
 
     const handleSave = async () => {
-        // TODO: 저장 버튼 클릭 시 동작
+        try {
+            const jsonData = {
+                email,
+                location: selectedLocation,
+                time: selectedTime
+            }
+
+            const response = await axios.post('/v1/weather-mappings', jsonData);
+            
+            console.log('저장 성공', response.data)
+        } catch (error) {
+            console.log('저장 실패', error)
+        }
     };
 
     const handleUpdate = () => {
