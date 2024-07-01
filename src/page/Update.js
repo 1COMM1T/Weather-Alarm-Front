@@ -10,6 +10,7 @@ import '../css/Main.css';
 import Button from "../components/Button";
 
 function Update() {
+    const key = useSelector(state => state.main.key)
     const email = useSelector(state => state.main.email);
     const [selectedLocation, setSelectedLocation] = useState('');
     const [selectedTime, setSelectedTime] = useState('');
@@ -23,7 +24,7 @@ function Update() {
         setSelectedTime(hour);
     };
 
-    const handleSave = async () => {
+    const handleUpdate = async () => {
         try {
             const jsonData = {
                 email,
@@ -31,7 +32,7 @@ function Update() {
                 time: selectedTime
             }
 
-            const response = await axios.post('/v1/weather-mappings', jsonData);
+            const response = await axios.put(`http://localhost:8080/v1/weather-mappings/${key}`, jsonData);
 
             console.log('저장 성공', response.data)
         } catch (error) {
@@ -43,8 +44,16 @@ function Update() {
         navigate('/');
     };
 
-    const handleDelete = () => {
-        // TODO: 삭제 버튼 클릭 시 동작
+    const handleDelete = async () => {
+        try {
+            const response = await axios.delete(`http://localhost:8080/v1/weather-mappings?key=${key}`);
+
+
+            alert(response.data)
+            navigate('/')
+        } catch (error) {
+            console.log('삭제 실패', error);
+        }
     };
 
     const mainStyle = {
@@ -58,8 +67,7 @@ function Update() {
         alignItems: 'center'
     };
 
-    console.log('email', email);
-
+    console.log('key', key);
     return (
         <div className="main" style={mainStyle}>
             <div className="content">
@@ -70,7 +78,7 @@ function Update() {
                     <TimeSelect onSelect={handleTimeSelect} />
                     <div className="form-group" style={{ width: 300 }}>
                         <div className="d-flex justify-content-between mt-4 mb-4">
-                            <Button label={'수정'} onClick={handleSave} className={"btn-primary"} />
+                            <Button label={'수정'} onClick={handleUpdate} className={"btn-primary"} />
                             <Button label={'취소'} onClick={handleCancel} className={"btn-secondary"} />
                             <Button label={'삭제'} onClick={handleDelete} className={"btn-danger"} />
                         </div>
