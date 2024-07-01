@@ -1,50 +1,22 @@
-import { useState } from "react";
-import LocationSelect from "../components/LocationSelect";
-import TimeSelect from "../components/TimeSelect";
+import { useDispatch, useSelector } from "react-redux";
+import { setKey, setEmail } from "../Store";
 import EmailInput from "../components/EmailInput";
-import axios from 'axios';
 import '../css/Main.css';
 import Button from "../components/Button";
+import { useNavigate } from "react-router";
 
 function Main() {
-    const [email, setEmail] = useState('');
-    const [selectedLocation, setSelectedLocation] = useState('');
-    const [selectedTime, setSelectedTime] = useState('');
+    const email = useSelector(state => state.main.email);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleEmailChange = (e) => {
-        setEmail(e.target.value);
+        dispatch(setEmail(e.target.value));
     };
 
-    const handleLocationSelect = (locationId) => {
-        setSelectedLocation(locationId);
-    };
-
-    const handleTimeSelect = (hour) => {
-        setSelectedTime(hour);
-    };
-
-    const handleSave = async () => {
-        try {
-            const jsonData = {
-                email,
-                location: selectedLocation,
-                time: selectedTime
-            }
-
-            const response = await axios.post('/v1/weather-mappings', jsonData);
-
-            console.log('저장 성공', response.data)
-        } catch (error) {
-            console.log('저장 실패', error)
-        }
-    };
-
-    const handleUpdate = () => {
-        // TODO: 수정 버튼 클릭 시 동작
-    };
-
-    const handleDelete = () => {
-        // TODO: 삭제 버튼 클릭 시 동작
+    const handleCheck = async () => {
+        // TODO: 임시, 확인 모달 작성해야함
+        navigate('/update')
     };
 
     const mainStyle = {
@@ -57,7 +29,8 @@ function Main() {
         justifyContent: 'center',
         alignItems: 'center'
     };
-
+    
+    console.log('email',email);
 
     return (
         <div className="main" style={mainStyle}>
@@ -65,13 +38,9 @@ function Main() {
                 <h1 className="mt-4 mb-4">Weather-Alarm</h1>
                 <div className="d-flex flex-column justify-content-center align-items-center">
                     <EmailInput email={email} onChange={handleEmailChange} />
-                    <LocationSelect onSelect={handleLocationSelect} />
-                    <TimeSelect onSelect={handleTimeSelect} />
                     <div className="form-group" style={{ width: 300 }}>
-                        <div className="d-flex justify-content-between mt-4 mb-4">
-                            <Button label={'저장'} onClick={handleSave} className={"btn-primary"} />
-                            <Button label={'수정'} onClick={handleUpdate} className={"btn-secondary"} />
-                            <Button label={'삭제'} onClick={handleDelete} className={"btn-danger"} />
+                        <div className="mt-4 mb-4">
+                            <Button label={'확인'} onClick={handleCheck} className={"btn-primary"} />
                         </div>
                     </div>
                 </div>
