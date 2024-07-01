@@ -1,42 +1,53 @@
 import { useState } from "react";
-import LocationSelect from "../components/LocationSelect";
-import TimeSelect from "../components/TimeSelect";
+import { useDispatch, useSelector } from "react-redux";
+import { setKey, setEmail } from "../Store";
+import { useNavigate } from "react-router";
 import EmailInput from "../components/EmailInput";
+import Button from "../components/Button";
+import axios from 'axios';
+import CheckModal from "../components/CheckModal";
 import '../css/Main.css';
 
 function Main() {
-    const [email, setEmail] = useState('');
-    const [selectedLocation, setSelectedLocation] = useState('');
-    const [selectedTime, setSelectedTime] = useState('');
+    const email = useSelector(state => state.main.email);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleEmailChange = (e) => {
-        setEmail(e.target.value);
+        dispatch(setEmail(e.target.value));
     };
 
-    const handleLocationSelect = (locationId) => {
-        setSelectedLocation(locationId);
+    const handleCheck = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/v1/weather-mappings/key`, {
+                params: { email }
+            });
+
+            // 이메일로 조회되는 키값이 있으면 업데이트, 없으면 등록 여부 확인 모달
+            if (response.data) {
+                navigate('/update');
+                setKey(response.data);
+            } else {
+                setIsModalOpen(true);
+            }
+        } catch (error) {
+            setIsModalOpen(true)
+        }
     };
 
-    const handleTimeSelect = (hour) => {
-        setSelectedTime(hour);
+    const closeModal = () => {
+        setIsModalOpen(false);
     };
 
-    const handleSave = () => {
-        // TODO: 선택된 내용 처리 메소드 작성 
-    };
-
-    const handleUpdate = () => {
-        // TODO: 수정 버튼 클릭 시 동작
-    };
-
-    const handleDelete = () => {
-        // TODO: 삭제 버튼 클릭 시 동작
-    };
+    const onConfirm = () => {
+        navigate('/save');
+    }
 
     const mainStyle = {
         height: '100vh',
         width: '100vw',
-        backgroundImage: 'url(/images/blue.jpg)', // 배경 이미지 경로 설정
+        backgroundImage: 'url(/images/blue.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         display: 'flex',
@@ -44,39 +55,20 @@ function Main() {
         alignItems: 'center'
     };
 
-    const contentStyle = {
-        backgroundColor: 'white',
-        padding: '20px',
-        borderRadius: '10px',
-        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        textAlign: 'center',
-        maxWidth: '400px',
-        width: '100%'
-    };
-
     return (
-        <div className="Main" style={mainStyle}>
-            <div className="Content" style={contentStyle}>
+        <div className="main" style={mainStyle}>
+            <div className="content">
                 <h1 className="mt-4 mb-4">Weather-Alarm</h1>
                 <div className="d-flex flex-column justify-content-center align-items-center">
                     <EmailInput email={email} onChange={handleEmailChange} />
-                    <LocationSelect onSelect={handleLocationSelect} />
-                    <TimeSelect onSelect={handleTimeSelect} />
                     <div className="form-group" style={{ width: 300 }}>
-                    <div className="d-flex justify-content-between mt-4">
-                        <button className="btn btn-primary mx-2" onClick={handleSave}>
-                            저장
-                        </button>
-                        <button className="btn btn-secondary mx-2" onClick={handleUpdate}>
-                            수정
-                        </button>
-                        <button className="btn btn-danger mx-2" onClick={handleDelete}>
-                            삭제
-                        </button>
-                    </div>
+                        <div className="mt-4 mb-4">
+                            <Button label={'확인'} onClick={handleCheck} className={"btn-primary"} />
+                        </div>
                     </div>
                 </div>
             </div>
+            <CheckModal isOpen={isModalOpen} onClose={closeModal} onConfirm={onConfirm} />
         </div>
     );
 }
