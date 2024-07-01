@@ -11,7 +11,7 @@ const TimeSelect = ({ onSelect }) => {
 
     return (
         <div className="form-group mt-4" style={{ width: 300 }}>
-            <label style={{fontWeight:"bold"}}>알림 받을 시간</label>
+            <label style={{ fontWeight: "bold" }}>알림 받을 시간</label>
             <select className="form-control mt-2" onChange={(e) => onSelect(e.target.value)}>
                 <option value="">시간을 선택해주세요</option>
                 {hours.map((hour) => (

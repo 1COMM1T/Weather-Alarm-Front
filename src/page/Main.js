@@ -32,7 +32,7 @@ function Main() {
             }
 
             const response = await axios.post('/v1/weather-mappings', jsonData);
-            
+
             console.log('저장 성공', response.data)
         } catch (error) {
             console.log('저장 실패', error)
@@ -68,10 +68,10 @@ function Main() {
                     <LocationSelect onSelect={handleLocationSelect} />
                     <TimeSelect onSelect={handleTimeSelect} />
                     <div className="form-group" style={{ width: 300 }}>
-                        <div className="d-flex justify-content-between mt-4">
-                            <Button label={'저장'} onClick={handleSave} className={"btn-primary"}/>
-                            <Button label={'수정'} onClick={handleUpdate} className={"btn-secondary"}/>
-                            <Button label={'삭제'} onClick={handleDelete} className={"btn-danger"}/>
+                        <div className="d-flex justify-content-between mt-4 mb-4">
+                            <Button label={'저장'} onClick={handleSave} className={"btn-primary"} />
+                            <Button label={'수정'} onClick={handleUpdate} className={"btn-secondary"} />
+                            <Button label={'삭제'} onClick={handleDelete} className={"btn-danger"} />
                         </div>
                     </div>
                 </div>
