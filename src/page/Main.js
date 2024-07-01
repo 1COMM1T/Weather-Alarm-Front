@@ -4,6 +4,7 @@ import TimeSelect from "../components/TimeSelect";
 import EmailInput from "../components/EmailInput";
 import axios from 'axios';
 import '../css/Main.css';
+import Button from "../components/Button";
 
 function Main() {
     const [email, setEmail] = useState('');
@@ -56,15 +57,9 @@ function Main() {
                     <TimeSelect onSelect={handleTimeSelect} />
                     <div className="form-group" style={{ width: 300 }}>
                         <div className="d-flex justify-content-between mt-4">
-                            <button className="btn btn-primary mx-2" onClick={handleSave}>
-                                저장
-                            </button>
-                            <button className="btn btn-secondary mx-2" onClick={handleUpdate}>
-                                수정
-                            </button>
-                            <button className="btn btn-danger mx-2" onClick={handleDelete}>
-                                삭제
-                            </button>
+                            <Button label={'저장'} onClick={handleSave} className={"btn-primary"}/>
+                            <Button label={'수정'} onClick={handleUpdate} className={"btn-secondary"}/>
+                            <Button label={'삭제'} onClick={handleDelete} className={"btn-danger"}/>
                         </div>
                     </div>
                 </div>
