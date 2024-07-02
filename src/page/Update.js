@@ -31,11 +31,12 @@ function Update() {
         if (savedEmail) {
             dispatch(setEmail(savedEmail));
         }
-        savedKey && dispatch(setKey(savedKey))
+        savedKey && dispatch(setKey(JSON.parse(savedKey))); 
     }, [dispatch]);
 
     const handleUpdate = async () => {
         try {
+            console.log('key', keyObject);
             const key = keyObject.key; // 객체 안의 key 속성에 접근
             const jsonData = {
                 email,
