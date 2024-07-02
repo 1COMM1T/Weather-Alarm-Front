@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setKey, setEmail } from "../Store";
@@ -24,6 +24,15 @@ function Update() {
     const handleTimeSelect = (hour) => {
         setSelectedTime(hour);
     };
+
+    useEffect(() => {
+        const savedEmail = localStorage.getItem('email');
+        const savedKey = localStorage.getItem('key');
+        if (savedEmail) {
+            dispatch(setEmail(savedEmail));
+        }
+        savedKey && dispatch(setKey(savedKey))
+    }, [dispatch]);
 
     const handleUpdate = async () => {
         try {
@@ -70,6 +79,9 @@ function Update() {
         justifyContent: 'center',
         alignItems: 'center'
     };
+
+    console.log('key', keyObject);
+    console.log('email', email);
 
     return (
         <div className="main" style={mainStyle}>
