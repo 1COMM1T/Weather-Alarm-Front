@@ -42,6 +42,8 @@ function Save() {
 
             const response = await axios.post('http://localhost:8080/v1/weather-mappings', jsonData);
             alert('저장되었습니다!');
+            navigate('/');
+
         } catch (error) {
             console.log('저장 실패', error)
         }
@@ -67,7 +69,7 @@ function Save() {
             <div className="content">
                 <h1 className="mt-4 mb-4">Weather-Alarm</h1>
                 <div className="d-flex flex-column justify-content-center align-items-center">
-                    <EmailInput email={email} onChange={handleEmailChange} disabled/>
+                    <EmailInput email={email} onChange={handleEmailChange} disabled />
                     <LocationSelect onSelect={handleLocationSelect} />
                     <TimeSelect onSelect={handleTimeSelect} />
                     <div className="form-group" style={{ width: 300 }}>
