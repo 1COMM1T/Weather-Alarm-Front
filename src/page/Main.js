@@ -62,8 +62,8 @@ function Main() {
     };
 
     const onConfirm = () => {
-        navigate('/save');
-    }
+        navigate('/save', { state: { email: email } }); // 이메일을 state로 전달
+    };
 
     const mainStyle = {
         height: '100vh',
