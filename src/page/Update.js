@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setKey, setEmail } from "../Store";
@@ -25,8 +25,18 @@ function Update() {
         setSelectedTime(hour);
     };
 
+    useEffect(() => {
+        const savedEmail = localStorage.getItem('email');
+        const savedKey = localStorage.getItem('key');
+        if (savedEmail) {
+            dispatch(setEmail(savedEmail));
+        }
+        savedKey && dispatch(setKey(JSON.parse(savedKey))); 
+    }, [dispatch]);
+
     const handleUpdate = async () => {
         try {
+            console.log('key', keyObject);
             const key = keyObject.key; // 객체 안의 key 속성에 접근
             const jsonData = {
                 email,
@@ -70,6 +80,9 @@ function Update() {
         justifyContent: 'center',
         alignItems: 'center'
     };
+
+    console.log('key', keyObject);
+    console.log('email', email);
 
     return (
         <div className="main" style={mainStyle}>
