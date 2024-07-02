@@ -36,12 +36,12 @@ function Save() {
         try {
             const jsonData = {
                 email,
-                location: selectedLocation,
-                time: selectedTime
+                cityCode: selectedLocation,
+                alarmTime: selectedTime
             }
 
             const response = await axios.post('http://localhost:8080/v1/weather-mappings', jsonData);
-
+            alert('저장되었습니다!');
         } catch (error) {
             console.log('저장 실패', error)
         }
