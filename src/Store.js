@@ -8,7 +8,7 @@ const mainSlice = createSlice({
     reducers: {
         setKey(state, action) {
             state.key = action.payload;
-            localStorage.setItem('key', action.payload);
+            localStorage.setItem('key', JSON.stringify(action.payload));
         },
         setEmail(state, action) {
             state.email = action.payload;
