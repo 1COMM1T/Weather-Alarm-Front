@@ -31,12 +31,11 @@ function Update() {
         if (savedEmail) {
             dispatch(setEmail(savedEmail));
         }
-        savedKey && dispatch(setKey(JSON.parse(savedKey))); 
+        savedKey && dispatch(setKey(JSON.parse(savedKey)));
     }, [dispatch]);
 
     const handleUpdate = async () => {
         try {
-            console.log('key', keyObject);
             const key = keyObject.key; // 객체 안의 key 속성에 접근
             const jsonData = {
                 email,
@@ -46,8 +45,7 @@ function Update() {
             console.log(key); // key의 값을 출력
 
             const response = await axios.put(`http://localhost:8080/v1/weather-mappings/${key}`, jsonData);
-
-            console.log('저장 성공', response.data)
+            alert('수정을 완료하였습니다!');
         } catch (error) {
             console.log('저장 실패', error)
         }
@@ -60,11 +58,18 @@ function Update() {
 
     const handleDelete = async () => {
         try {
-            const key = keyObject.key; // 객체 안의 key 속성에 접근
-            const response = await axios.delete(`http://localhost:8080/v1/weather-mappings?key=${key}`);
-
-            alert(response.data)
-            navigate('/')
+            const confirmed = window.confirm('삭제하시겠습니까?');
+            if(confirmed) {
+                const key = keyObject.key; // 객체 안의 key 속성에 접근
+                const response = await axios.delete(`http://localhost:8080/v1/weather-mappings/${key}`);
+                dispatch(setKey(""))
+                dispatch(setEmail(""))
+                localStorage.removeItem('key');
+                localStorage.removeItem('email');
+                alert('삭제되었습니다!');
+                navigate('/');
+            }
+            
         } catch (error) {
             console.log('삭제 실패', error);
         }
@@ -106,3 +111,4 @@ function Update() {
 }
 
 export default Update;
+
