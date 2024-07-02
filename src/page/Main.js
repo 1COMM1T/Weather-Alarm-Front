@@ -19,7 +19,22 @@ function Main() {
         dispatch(setEmail(e.target.value));
     };
 
+    const validateEmail = (email) => {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(email).toLowerCase());
+    };
+
     const handleCheck = async () => {
+        if (!email) {
+            alert("이메일을 입력해 주세요.");
+            return;
+        }
+
+        if (!validateEmail(email)) {
+            alert("올바른 이메일 형식을 입력해 주세요.");
+            return;
+        }
+        
         try {
             const response = await axios.get(`http://localhost:8080/v1/weather-mappings/key`, {
                 params: { email }
