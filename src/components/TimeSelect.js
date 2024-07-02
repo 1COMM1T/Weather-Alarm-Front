@@ -1,27 +1,28 @@
-const generateHours = () => {
-    const hours = [];
-    for (let i = 0; i < 24; i++) {
-        hours.push(`${i.toString().padStart(2, '0')}:00`);
-    }
-    return hours;
-};
+import { useState } from 'react';
 
 const TimeSelect = ({ onSelect }) => {
-    const hours = generateHours();
+    const [selectedTime, setSelectedTime] = useState('');
+
+    const handleTimeChange = (e) => {
+        const time = e.target.value;
+        console.log(time);
+        setSelectedTime(time);
+        onSelect(time);
+    };
 
     return (
         <div className="form-group mt-4" style={{ width: 300 }}>
             <label style={{ fontWeight: "bold" }}>알림 받을 시간</label>
-            <select className="form-control mt-2" onChange={(e) => onSelect(e.target.value)}>
-                <option value="">시간을 선택해주세요</option>
-                {hours.map((hour) => (
-                    <option key={hour} value={hour}>
-                        {hour}
-                    </option>
-                ))}
-            </select>
+            <input
+                type="time"
+                className="form-control mt-2"
+                value={selectedTime}
+                onChange={handleTimeChange}
+                required
+            />
         </div>
     );
 };
 
 export default TimeSelect;
+
