@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setKey, setEmail } from "../Store";
@@ -10,11 +10,12 @@ import '../css/Main.css';
 import Button from "../components/Button";
 
 function Update() {
-    const key = useSelector(state => state.main.key)
+    const keyObject = useSelector(state => state.main.key); // key가 객체로 들어오는 경우
     const email = useSelector(state => state.main.email);
     const [selectedLocation, setSelectedLocation] = useState('');
     const [selectedTime, setSelectedTime] = useState('');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleLocationSelect = (locationId) => {
         setSelectedLocation(locationId);
@@ -24,13 +25,24 @@ function Update() {
         setSelectedTime(hour);
     };
 
+    useEffect(() => {
+        const savedEmail = localStorage.getItem('email');
+        const savedKey = localStorage.getItem('key');
+        if (savedEmail) {
+            dispatch(setEmail(savedEmail));
+        }
+        savedKey && dispatch(setKey(savedKey))
+    }, [dispatch]);
+
     const handleUpdate = async () => {
         try {
+            const key = keyObject.key; // 객체 안의 key 속성에 접근
             const jsonData = {
                 email,
-                location: selectedLocation,
-                time: selectedTime
+                cityCode: selectedLocation,
+                alarmTime: selectedTime
             }
+            console.log(key); // key의 값을 출력
 
             const response = await axios.put(`http://localhost:8080/v1/weather-mappings/${key}`, jsonData);
 
@@ -41,13 +53,14 @@ function Update() {
     };
 
     const handleCancel = () => {
+        dispatch(setKey(""))
         navigate('/');
     };
 
     const handleDelete = async () => {
         try {
+            const key = keyObject.key; // 객체 안의 key 속성에 접근
             const response = await axios.delete(`http://localhost:8080/v1/weather-mappings?key=${key}`);
-
 
             alert(response.data)
             navigate('/')
@@ -67,7 +80,9 @@ function Update() {
         alignItems: 'center'
     };
 
-    console.log('key', key);
+    console.log('key', keyObject);
+    console.log('email', email);
+
     return (
         <div className="main" style={mainStyle}>
             <div className="content">

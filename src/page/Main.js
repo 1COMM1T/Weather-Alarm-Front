@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setKey, setEmail } from "../Store";
 import { useNavigate } from "react-router";
@@ -10,6 +10,7 @@ import '../css/Main.css';
 
 function Main() {
     const email = useSelector(state => state.main.email);
+    const key = useSelector(state => state.main.key);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -18,16 +19,30 @@ function Main() {
         dispatch(setEmail(e.target.value));
     };
 
+    const validateEmail = (email) => {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(email).toLowerCase());
+    };
+
     const handleCheck = async () => {
+        if (!email) {
+            alert("이메일을 입력해 주세요.");
+            return;
+        }
+
+        if (!validateEmail(email)) {
+            alert("올바른 이메일 형식을 입력해 주세요.");
+            return;
+        }
+        
         try {
             const response = await axios.get(`http://localhost:8080/v1/weather-mappings/key`, {
                 params: { email }
             });
-
+    
             // 이메일로 조회되는 키값이 있으면 업데이트, 없으면 등록 여부 확인 모달
             if (response.data) {
-                navigate('/update');
-                setKey(response.data);
+                dispatch(setKey(response.data))
             } else {
                 setIsModalOpen(true);
             }
@@ -35,14 +50,20 @@ function Main() {
             setIsModalOpen(true)
         }
     };
+    
+    useEffect(() => {
+        if (key) {
+            navigate('/update');
+        }
+    }, [key]);
 
     const closeModal = () => {
         setIsModalOpen(false);
     };
 
     const onConfirm = () => {
-        navigate('/save');
-    }
+        navigate('/save', { state: { email: email } }); // 이메일을 state로 전달
+    };
 
     const mainStyle = {
         height: '100vh',
