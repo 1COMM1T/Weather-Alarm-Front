@@ -10,7 +10,7 @@ import '../css/Main.css';
 import Button from "../components/Button";
 
 function Update() {
-    const key = useSelector(state => state.main.key)
+    const keyObject = useSelector(state => state.main.key); // key가 객체로 들어오는 경우
     const email = useSelector(state => state.main.email);
     const [selectedLocation, setSelectedLocation] = useState('');
     const [selectedTime, setSelectedTime] = useState('');
@@ -27,11 +27,13 @@ function Update() {
 
     const handleUpdate = async () => {
         try {
+            const key = keyObject.key; // 객체 안의 key 속성에 접근
             const jsonData = {
                 email,
-                location: selectedLocation,
-                time: selectedTime
+                cityCode: selectedLocation,
+                alarmTime: selectedTime
             }
+            console.log(key); // key의 값을 출력
 
             const response = await axios.put(`http://localhost:8080/v1/weather-mappings/${key}`, jsonData);
 
@@ -48,8 +50,8 @@ function Update() {
 
     const handleDelete = async () => {
         try {
+            const key = keyObject.key; // 객체 안의 key 속성에 접근
             const response = await axios.delete(`http://localhost:8080/v1/weather-mappings?key=${key}`);
-
 
             alert(response.data)
             navigate('/')
@@ -69,7 +71,6 @@ function Update() {
         alignItems: 'center'
     };
 
-    console.log('key', key);
     return (
         <div className="main" style={mainStyle}>
             <div className="content">
