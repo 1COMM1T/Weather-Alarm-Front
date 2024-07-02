@@ -15,6 +15,7 @@ function Update() {
     const [selectedLocation, setSelectedLocation] = useState('');
     const [selectedTime, setSelectedTime] = useState('');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleLocationSelect = (locationId) => {
         setSelectedLocation(locationId);
@@ -41,6 +42,7 @@ function Update() {
     };
 
     const handleCancel = () => {
+        dispatch(setKey(""))
         navigate('/');
     };
 
