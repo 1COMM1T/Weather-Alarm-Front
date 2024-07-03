@@ -40,7 +40,7 @@ function Save() {
                 alarmTime: selectedTime
             }
 
-            const response = await axios.post('http://localhost:8080/v1/weather-mappings', jsonData);
+            const response = await axios.post('http://3.37.242.214:8080/v1/weather-mappings', jsonData);
             alert('저장되었습니다!');
             navigate('/');
 

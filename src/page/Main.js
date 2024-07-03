@@ -36,7 +36,7 @@ function Main() {
         }
         
         try {
-            const response = await axios.get(`http://localhost:8080/v1/weather-mappings/key`, {
+            const response = await axios.get(`http://3.37.242.214:8080/v1/weather-mappings/key`, {
                 params: { email }
             });
     
