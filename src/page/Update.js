@@ -44,7 +44,7 @@ function Update() {
             }
             console.log(key); // key의 값을 출력
 
-            const response = await axios.put(`http://localhost:8080/v1/weather-mappings/${key}`, jsonData);
+            const response = await axios.put(`http://3.37.242.214:8080/v1/weather-mappings/${key}`, jsonData);
             alert('수정을 완료하였습니다!');
         } catch (error) {
             console.log('저장 실패', error)
@@ -61,7 +61,7 @@ function Update() {
             const confirmed = window.confirm('삭제하시겠습니까?');
             if(confirmed) {
                 const key = keyObject.key; // 객체 안의 key 속성에 접근
-                const response = await axios.delete(`http://localhost:8080/v1/weather-mappings/${key}`);
+                const response = await axios.delete(`http://3.37.242.214:8080/v1/weather-mappings/${key}`);
                 dispatch(setKey(""))
                 dispatch(setEmail(""))
                 localStorage.removeItem('key');
